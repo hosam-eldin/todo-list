@@ -2,6 +2,11 @@
 
     include "partials/header.php";
     include "partials/notifications.php";
+    include "config/database.php";
+
+    $database = new DATABASE();
+    $db = $database->connect();
+    
 
 ?>
 
