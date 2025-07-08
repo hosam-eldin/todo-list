@@ -8,6 +8,7 @@ class DATABASE  {
     private $db_name = 'todo_app_mysqli_oop';
 
     public $conn;
+    
     public function connect (){
         $this->conn = null;
 
@@ -16,7 +17,7 @@ class DATABASE  {
             if($this->conn->connect_error){
                 die('connection failed ' . $this->conn->connect_error);
             }
-            echo 'yea it works.';
+            echo "yea it works." . "<br>";
         } catch (Exception $error){
             echo 'connection error ' . $error->getMessage();
         }
