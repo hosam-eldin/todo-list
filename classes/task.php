@@ -17,10 +17,18 @@ class TASK {
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('s',$this->task);
         return $stmt->execute();
+    }
+    public function read() {
+                $query = "SELECT * FROM " . $this->table . " ORDER BY created_at DESC ";
+                $result = $this->conn->query($query);
+                return $result; 
+    }
+    public function complete($id){
+
+        $query = "UPDATE " . $this->table . " SET is_completed=1 WHERE id=?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('i',$id);
+        return $stmt->execute();
         
     }
-    
-
-
-
 }
