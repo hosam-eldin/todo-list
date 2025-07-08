@@ -17,10 +17,11 @@ class TASK {
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('s',$this->task);
         return $stmt->execute();
-        
+    }
+    public function read() {
+                $query = "SELECT * FROM " . $this->table . " ORDER BY created_at DESC ";
+                $result = $this->conn->query($query);
+                return $result; 
     }
     
-
-
-
 }
