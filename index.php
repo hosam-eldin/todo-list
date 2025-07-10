@@ -4,6 +4,7 @@
     include "partials/notifications.php";
     include "config/database.php";
     include "classes/task.php";
+    
 
     $database = new DATABASE();
     $db = $database->connect();
@@ -14,25 +15,36 @@
         if(isset($_POST['add_task'])){
             $todo->task = $_POST['task'];
             $todo->create();
+            $_SESSION['message'] = "Task added successfully!";
+            $_SESSION['message_type'] = "success";
 
         }elseif(isset($_POST['complete_task'])){
-
             $todo->complete($_POST['id']);
+            $_SESSION['message'] = "Task completed!";
+            $_SESSION['message_type'] = "success";
+
         }elseif(isset($_POST['undo_complete_task'])){
-
             $todo->undo($_POST['id']);
-        }elseif(isset($_POST['delete_task'])){
+            $_SESSION['message'] = "Task incompleted!";
+            $_SESSION['message_type'] = "success";
 
+        }elseif(isset($_POST['delete_task'])){
             $todo->delete($_POST['id']);
+            $_SESSION['message'] = "Task deleted!";
+            $_SESSION['message_type'] = "success";
         }
     }
-
-
-
-
-    
+    // Fetch tasks from the database
     $tasks = $todo->read();
 ?>
+<?php if(isset($_SESSION['message'])): ?>
+<div class="notification-container">
+  <div class="notification <?php echo $_SESSION['message_type']; ?>">
+    <?php echo $_SESSION['message']; ?>
+    <?php unset($_SESSION['message']); ?>
+  </div>
+</div>
+<?php endif; ?>
 
 <div class="container">
   <h1>Todo App</h1>
@@ -65,7 +77,7 @@
         </form>
         <?php endif; ?>
         <!-- Delete Task -->
-        <form method="POST" style="display:inline;">
+        <form onsubmit="return confirmDelete()" method="POST" style="display:inline;">
           <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
           <button class="delete" type="submit" name="delete_task">Delete</button>
         </form>
@@ -75,6 +87,11 @@
 
   </ul>
 </div>
+<script>
+function confirmDelete() {
+  return confirm("Are you sure you want to delete this task?");
+}
+</script>
 
 
 <?php
